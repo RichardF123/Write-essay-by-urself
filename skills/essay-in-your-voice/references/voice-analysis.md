@@ -2,7 +2,7 @@
 
 ## Establish a usable sample set
 
-Create a private source manifest: sample ID, local locator, date if known, language, genre, task constraints, author-written span, editing history if supplied, and relevance to the target. A filename with multiple names is not evidence against the user's authorship statement. In mixed notebooks, isolate narrative analysis from prompts, library documentation, code, outputs and formulas.
+Generate a private source manifest from the uploaded files: sample ID, local locator, date if known, language, genre, task constraints, author-written span, editing history if supplied, and relevance to the target. This inventory is agent work, not a prerequisite the user must fill out. A filename with multiple names is not evidence against the user's authorship statement. In mixed notebooks, isolate narrative analysis from prompts, library documentation, code, outputs and formulas.
 
 Prefer several independent pieces and sustained reasoning passages. Three to five samples is a practical starting suggestion, not a validity threshold. Avoid duplicate drafts overweighting one passage. If possible, reserve one original passage as a holdout to test the profile instead of using it to generate rules.
 

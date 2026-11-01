@@ -7,6 +7,14 @@ description: Analyze a user's own writing samples and reasoning habits, compare 
 
 Restore the author's evidenced way of explaining and reasoning. Treat detector highlights as review locations, not proof of authorship or a quality score. Do not promise detector outcomes.
 
+## Upload-first default
+
+When the user uploads materials and asks for the workflow, handle intake through delivery autonomously. Inspect the supplied attachments or designated workspace, classify files, extract readable text with available tools, identify samples/rubric/reports/drafts, and generate the private material inventory yourself. Accept ordinary filenames and supported formats; do not require the user to rename files, create folders, write a manifest, run scripts, label every paragraph, or prebuild a voice profile.
+
+Infer the revision base using explicit user selection first, then verified report text, version content and dates. Readable content outweighs filenames. If ambiguity would change the output, ask one concise bundled question while continuing independent work. Use supplied authorship statements rather than asking again. Missing optional reports do not block style-based revision; missing samples permits only stated-preference editing until originals are supplied. Missing rubric permits content review, with compliance checks recorded as unresolved.
+
+For a general request to process uploaded materials, perform voice research, available report comparison, paragraph audit, justified minimal revision and verification in that order. Deliver the revised draft and a short explanation; keep detailed logs as supporting outputs. Explicit requests to analyze only, pause, or preserve a particular span still control scope. Use the host's document/PDF tools to preserve requested artifact format. Do not make profile approval a compulsory gate when the full workflow is already authorized.
+
 ## Select scope and establish inputs
 
 Follow the requested mode: style research only, paragraph audit, matched report comparison, local revision, or final formatting. A request to analyze first does not authorize rewriting. When revision is requested, continue through delivery rather than stopping at a plan.
