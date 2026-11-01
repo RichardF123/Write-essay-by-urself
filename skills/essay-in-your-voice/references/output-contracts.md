@@ -14,6 +14,7 @@ Use only the outputs needed for the requested scope. These are compact schemas, 
 - Report metadata and verified draft mapping; observed score/coverage; mapping confidence.
 - Stable paragraph/span ID | round | report page/anchor | actual text | highlight extent | readability.
 - Cross-round: text changed? | exact/rewritten/split/merge/uncertain | highlight transition | content assessment | attribution limits.
+- Repeated-unit review: selected report IDs | unique submissions | full/partial/unknown counts | exactly/at-least/consecutive filter | latest state | current permitted span. Record intermediate untested drafts separately.
 
 ## highlight-patterns.md
 
@@ -33,6 +34,7 @@ Cover every body paragraph. “Keep, no specific problem found” is a valid dec
 - Each change: paragraph ID, original exact span, replacement, reason grounded in evidence, facts/citations/uncertainty retained, relevant rubric check.
 - Exact comparison of protected text; exceptions and why necessary.
 - Report status: matching fresh report / untested / unknown, without a promised score.
+- For sentence organization: old/new propositions and links, original style anchor, immediate predecessor comparison, and retain/revise/roll-back reason. A report transition alone is not a retention rule.
 
 ## rubric-check.md
 

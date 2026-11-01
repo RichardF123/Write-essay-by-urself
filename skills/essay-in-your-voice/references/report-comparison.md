@@ -22,6 +22,40 @@ PDF 先检查页面和标注。颜色可能是展平的背景图形而非 PDF an
 
 辅助脚本可以确认字面差异和哈希，不能读取检测色块，也不能替代人工确认映射。
 
+### 重复高亮的筛选
+
+先按实际提交去重，再定义“高亮两次”是恰好两次、至少两次，还是连续最近两次。用户明确说“恰好”时严格执行；否则明确本轮采用的口径，同时单列恰好两次与三次持续的范围。缺失、不可辨认、未对齐和隐藏分数的无高亮状态都是未知，不记作未高亮。
+
+使用稳定的语义单元及每轮实际文字，不把合句、拆句之后的新句号编号继续套到旧稿。跨句合并无法逐命题对应时，保留组合单元并标注无法细分；部分高亮只能证明该单元有重叠，不能当作整句授权。分别统计原文相同且持续亮、改写后对应内容仍亮、未改却变化的情况。标题、图注、正文和参考文献分开记录。
+
+历史重复频次是复核顺序，最新匹配报告决定严格模式下的修改边界。以前亮过两次、最新未亮的文字仍须冻结。agent 可用 `scripts/summarize_repeated_highlights.py` 汇总已经人工核对的单元；输入由agent生成，脚本不识别PDF颜色、不匹配原稿，也不生成编辑权限。
+
+工具输入示例（单一文章家族，稳定单元不必等于整句）：
+
+```json
+{
+  "family_id": "essay-example",
+  "latest_report_id": "report-b",
+  "reports": [
+    {"report_id": "report-a", "submission_id": "submission-a", "draft_id": "draft-a", "tool": "example"},
+    {"report_id": "report-b", "submission_id": "submission-b", "draft_id": "draft-b", "tool": "example"}
+  ],
+  "units": [{
+    "unit_id": "observation-and-qualification",
+    "observations": [
+      {"report_id": "report-a", "highlight": "full", "mapping": "exact", "text": "The observed detail remains uncertain.", "locator": "PDF page 3, paragraph 2"},
+      {"report_id": "report-b", "highlight": "partial", "mapping": "rewrite", "text": "This detail is still uncertain.", "locator": "PDF page 3, paragraph 2, first clause only"}
+    ]
+  }]
+}
+```
+
+`highlight`取`full/partial/none/unknown`，`mapping`取`exact/rewrite/split/merge/uncertain`。已知状态必须有实际文字与定位；缺项或不确定映射排除计数。完全覆盖与部分覆盖分别统计，频次表示至少部分重叠。存在未知轮次时，“恰好N次”返回未知，已确认的“至少N次”仍可记录。`latest_report_id`须明确指定；报告列表和下载文件次序不用于猜测最新版本。连续N次需另用已核对的提交时间顺序判断，本工具不计算连续次数。
+
+```sh
+python scripts/summarize_repeated_highlights.py --input private/units.json --output private/repeated-summary.json --min-highlights 2
+```
+
 ## 4. 把文字变化与标亮变化分开
 
 | 文字状态 | 高亮变化 | 可以记录 | 不能推出 |
@@ -34,6 +68,8 @@ PDF 先检查页面和标注。颜色可能是展平的背景图形而非 PDF an
 | 任意 | 部分/未知/缺稿 | 限定分析范围 | 当作完全解除或持续高亮 |
 
 报告分母、参考文献覆盖、图注、语言和全文变动都可能不同。不要默认参考文献与图注永远排除；按每份报告实际说明记录，说明不明就留空。`*%` 等隐藏结果保留原样及解释，不填写 0%，不虚构准确比例。AI 检测与查重相似度分别建表。
+
+记录相邻报告之间的全部稿件和修改轮次。若中间有未检测稿，分数变化对应整个区间，不能归因于最后一次修改或单个词。总分相同也应检查高亮迁移；局部分数变化不能反推某种句式的检测机制。对同一段的写作改善与高亮变化分别作结论。
 
 ## 5. 从多轮记录总结候选问题
 

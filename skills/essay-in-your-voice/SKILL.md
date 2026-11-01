@@ -37,6 +37,8 @@ Produce `voice-profile.md` with sample locators, short evidence anchors, counter
 
 Include a small set of evidence-backed calibration anchors: the author's wording, the function it performs, and a meaning-preserving adaptation appropriate to the essay. Test the proposed rules against a held-out original passage when available. Preserve correct reasoning links and necessary technical terms. Do not treat assistant revisions as new independent proof of the author's style, and do not repeatedly declare that all formulaic patterns have disappeared without checking the delivered text.
 
+When the user says edits still do not sound like them, reread the existing profile and its relevant original anchors before another pass. For sentence organization, repeated highlights or several revision rounds, read [sentence-organization.md](references/sentence-organization.md). Diagnose clause relationships and sentence roles before substituting vocabulary; shorter, more active or less first-person prose is not automatically a closer match.
+
 For optional external profile/retrieval tools, read [integrations.md](references/integrations.md). Core analysis must still work from user-provided samples without those tools.
 
 ## Compare reports when supplied
@@ -46,6 +48,8 @@ Read [report-comparison.md](references/report-comparison.md) and use [highlight-
 Verify each report against its actual submitted text. Record report date, denominator/coverage, visible score, page, paragraph anchor and visual highlight extent. Distinguish AI and similarity reports. A suppressed score such as `*%` is not zero or an exact number.
 
 Align paragraphs by textual evidence; mark splits, merges and ambiguous matches. Separate exact unchanged text from revised text and compare highlight transitions. Include changes on unchanged sentences and unresolved mappings in conclusions. Summarize recurring patterns only with locatable cases, checks against author samples, and counterexamples. Do not infer why a proprietary detector fired.
+
+For repeated-highlight requests, use the frequency and latest-boundary rules in [report-comparison.md](references/report-comparison.md). `scripts/summarize_repeated_highlights.py` summarizes agent-verified semantic-unit observations across unique submissions; it does not read PDF colors or choose editable character spans. Record all untested intermediate drafts between reports before attributing any change to an editing pass.
 
 Output `report-ledger.md` and `highlight-patterns.md`. If visual markup cannot be read, mark unknown; text extraction alone cannot establish highlighting. Do not repeatedly rewrite or request detection just to chase a lower number.
 

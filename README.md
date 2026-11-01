@@ -56,6 +56,16 @@ agent 会先核对报告与原稿，生成可编辑区间，再逐字验证成�
 
 The agent matches the report to the draft, builds editable spans and verifies that the result contains exactly the authorized replacements. It separately checks meaning, claim strength and neighboring sentences. See the [wording-only workflow](skills/essay-in-your-voice/references/wording-only.md).
 
+## 先校准句子组织，再做局部修改 / Calibrate sentence organization first
+
+当你觉得修订稿仍不像自己，agent 会重读个人文风分析及对应原始段落，检查你如何连接观察、理由、解释和判断，再决定怎样组织句子。它会保留有作用的重复、第一人称和中长句，具体调整依据写入修改记录。参见[句子组织校准](skills/essay-in-your-voice/references/sentence-organization.md)。
+
+When a revision still feels unlike you, the agent rereads the voice analysis and its original passages, checks how you connect observations, reasons, explanations and judgments, then decides how to organize the sentences. Useful repetition, first person and longer sentences stay where they serve your writing. The revision record explains each choice. See [sentence-organization calibration](skills/essay-in-your-voice/references/sentence-organization.md).
+
+上传多轮报告后，agent 会分别列出“恰好两次”“至少两次”及连续高亮的位置，区分原文未改和改写后的对应内容，并记录两份报告之间尚未检测的中间稿。历史记录帮助安排复核顺序，最新报告和你的指令确定本轮可修改范围；已经取消高亮的受保护文字保留原样。这些记录由agent自动整理。
+
+With several reports, the agent lists passages highlighted exactly twice, at least twice and in consecutive rounds. It separates unchanged wording from rewritten counterparts and records untested drafts between reports. History guides review priorities; the latest report and your instructions define the current editing boundary. Protected passages that have cleared remain unchanged. The agent prepares these records automatically.
+
 ## 大概判断AI率 / AI-report preflight
 
 上传自己的报告和对应原稿，agent 可以给出逐段的高亮倾向参考：较低、混合、较高或证据待补，并附相似案例、反例与置信度。它还会单独判断该段是否像用户自己的表达。当前功能定位为**基于报告案例的预判**。

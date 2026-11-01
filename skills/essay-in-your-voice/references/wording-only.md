@@ -30,6 +30,8 @@ When the user explicitly asks to revise every highlight, include each readable h
 
 Read the current evidence-based profile, not a generic list of banned AI words. Match ordinary verbs, pronoun use, clause relationships and transitions to actual samples. A writer may use long explanatory clauses, repeated technical nouns and genuine comparisons. Do not enforce short-sentence quotas, insert “I think,” add errors or swap correct words just for rarity.
 
+For requested sentence-organization changes, follow [sentence-organization.md](sentence-organization.md). Local joins, splits or clause movement preserve the existing inferential contract and any explicit order restriction. Coalesce editable spans only after confirming all intervening characters are authorized; never use sentence adjacency alone as proof of coverage. Historical highlight frequency selects review locations, while the latest matched report and user instructions determine what may change now.
+
 The target mark is a scope preference. For a user seeking a clear undergraduate essay, prefer direct readable wording and preserve the existing analysis. Do not manufacture sophistication, strengthen claims, or deliberately reduce quality.
 
 ## Verify and stop
