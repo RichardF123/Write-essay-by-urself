@@ -1,4 +1,4 @@
 interface:
   display_name: "Essay in Your Voice"
-  short_description: "Study personal voice and revise essays with evidence"
-  default_prompt: "Use $essay-in-your-voice to analyze my writing samples, compare matched report highlights, and make minimal revisions that preserve the rubric."
+  short_description: "Voice-first essay edits with strict wording boundaries"
+  default_prompt: "Use $essay-in-your-voice with my uploaded samples and reports to learn my voice, assess highlight tendency, and revise only within my requested scope."

@@ -33,3 +33,11 @@ Keep necessary grammatical improvements. Do not reproduce an accidental comma sp
 Compare the rules against the holdout if available. Note misses, not just matches. Before a large revision, use a small in-scope paragraph as calibration where useful; do not make user approval a mandatory gate if they already requested the full edit. Preserve facts and rubric functions in this trial.
 
 Update the profile when the user says a passage does not sound like them. Treat that as direct preference evidence; recheck the originals to understand the cause. Do not feed the latest assisted revision back as proof of an original habit. A profile remains provisional until the evidence and user feedback support it.
+
+## Keep a compact calibration card
+
+Retain only the few choices that materially guide this revision: preferred everyday verbs, typical clause relationships, concrete ways of citing visible evidence, transitions with a real function, pronoun use and genre boundaries. Each choice needs a source locator. Record user corrections alongside the affected rule so later turns do not revive a rejected house style.
+
+Use a meaning-preserving micro-comparison on the same supplied claim to test an editing choice. Evaluate the version by its fit to originals and its local context, not whether it has more first person or fewer long words. If a held-out original contradicts a rule, narrow the rule instead of editing the evidence away. Do not copy the originating user's vocabulary, subject or reasoning into another user's profile.
+
+Before delivery, compare the edited passages to these anchors. Check for vocabulary inflation, overly uniform short sentences, unnecessary synonym substitution, method declarations repeated in place of results, and accidental changes to who is compared with whom. These are review questions, not universal bans; preserve the writer's genuine formal language and necessary technical terms.

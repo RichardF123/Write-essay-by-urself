@@ -12,3 +12,11 @@ __pycache__/
 *.pyc
 .env
 .env.*
+# Session-level writing artifacts belong in private task folders
+/voice-profile.md
+/report-ledger.md
+/preflight-assessment.md
+/paragraph-audit.md
+/revision-log.md
+/rubric-check.md
+/highlight-patterns.md

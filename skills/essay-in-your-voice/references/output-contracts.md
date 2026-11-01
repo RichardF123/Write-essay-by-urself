@@ -39,3 +39,17 @@ Cover every body paragraph. “Keep, no specific problem found” is a valid dec
 Requirement verbatim or faithfully summarized | source location | evidence in draft | satisfied/not satisfied/unverified/not applicable | required action.
 
 Use actual word-count rules; distinguish main text from captions, references and cover/reflection. Source ratios need an explicit denominator. An estimated grade requires the actual rubric and a stated uncertainty range, never an assured mark.
+
+## preflight-assessment.md
+
+- Available evidence: original samples, unique report submissions, independent essay families, tool/model/genre comparability, score states and known disagreements.
+- Paragraph | author fit | highlight tendency | confidence and basis | matched analogue | counterexample | warranted action within current scope.
+- Observed report percentages and historical coverage kept distinct from the preflight labels.
+- Calibration status and held-out error only if a predictor was actually fitted/evaluated; otherwise qualitative assessment.
+
+## wording scope manifest and check
+
+- The agent generates exact text snapshots, authorized character spans and replacements from the selected report.
+- `verify_wording_scope.py` verifies that every edit lies within authorization and reconstructs the exact candidate. Report protected text as preserved only after this or an equivalent exact check passes.
+- Manual semantic check: facts, comparisons, uncertainty, attribution, causal relations and neighboring frozen sentences.
+- Record the requested target language level/mark as effort guidance, separately from actual rubric assessment.

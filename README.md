@@ -8,6 +8,10 @@
 
 This skill grew out of a full essay revision process. It studies how the author observes, explains, compares and reaches a judgment, then applies those habits to each paragraph while preserving evidence, citations and assignment requirements. Reports from several rounds help track highlighted passages and identify areas for further review.
 
+核心目标是让文章更像用户自己：从原始样本提取可核查的表达习惯，再让每次编辑遵守用户选择的范围。文风贴合程度、内容质量和报告高亮变化分别记录。
+
+The main goal is writing that sounds more like its author: learn traceable expression habits from original samples and keep each edit within the user’s chosen scope. Author fit, content quality and report-highlight changes are recorded separately.
+
 ## 上传即可开始 / Upload and start
 
 安装后，把手头资料上传到支持附件的 agent，发送下面一句即可。终端 agent 可以读取你放进工作目录的文件。文件分类、文字提取、版本匹配、文风分析、逐段诊断、修订记录和评分核查都交给 agent 完成。
@@ -30,6 +34,52 @@ Return the revised draft and a short explanation of the changes.
 用户上传现有文件就可以开始。agent 自动生成材料清单和版本记录；存在多个候选稿时，结合报告正文、日期和文字差异识别修改基底。遇到影响结果的缺项或冲突，再集中问一个简短问题。
 
 Users can start with the files they already have. The agent creates the material inventory and version records. When several drafts are present, it uses report text, dates and textual differences to identify the revision base. It asks a concise, bundled question when a missing item or conflict materially affects the result.
+
+## 选择修改范围 / Choose the editing scope
+
+默认从样本学习文风。用户可以直接说“只分析”“只改措辞”或“只改高亮”，agent 会自动切换范围。例如，下面这句会冻结未高亮文字及原有分析顺序，评分目标用于控制表达的复杂程度。
+
+The default workflow learns voice from the samples. Users can say “analyze only,” “wording only” or “highlighted text only,” and the agent adjusts its scope. The request below freezes unhighlighted text and the existing argument order; the target mark guides the level of expression.
+
+```text
+只改报告高亮处的措辞，按我的用语习惯写。没高亮的逐字保留，
+逻辑和分析顺序保持原样。我的目标是24/30，表达清楚直接即可。
+```
+
+```text
+Revise only the highlighted wording in my voice. Preserve unhighlighted text
+exactly and keep the argument and analysis order. My target is 24/30;
+use clear, direct language at the appropriate level.
+```
+
+agent 会先核对报告与原稿，生成可编辑区间，再逐字验证成稿只包含授权替换。语义、判断力度和前后句的衔接另行检查。具体流程见[仅措辞模式](skills/essay-in-your-voice/references/wording-only.md)。
+
+The agent matches the report to the draft, builds editable spans and verifies that the result contains exactly the authorized replacements. It separately checks meaning, claim strength and neighboring sentences. See the [wording-only workflow](skills/essay-in-your-voice/references/wording-only.md).
+
+## 大概判断AI率 / AI-report preflight
+
+上传自己的报告和对应原稿，agent 可以给出逐段的高亮倾向参考：较低、混合、较高或证据待补，并附相似案例、反例与置信度。它还会单独判断该段是否像用户自己的表达。当前功能定位为**基于报告案例的预判**。
+
+Upload your reports and the matching drafts for a paragraph-level highlight-tendency review: lower resemblance, mixed, higher resemblance or more evidence needed, with analogues, counterexamples and confidence. The agent separately reviews how closely each passage matches your own writing. The current capability is an **evidence-based preflight review**.
+
+```text
+结合我上传的写作样本和历次报告，判断当前稿哪些段落更值得复查。
+分别给出个人文风贴合程度、高亮倾向和判断依据，先分析即可。
+```
+
+```text
+Use my writing samples and previous reports to identify passages worth reviewing.
+Separate author fit from highlight tendency and explain the evidence.
+Analyze the draft first.
+```
+
+报告中的百分比作为实际观测保存，历史区间按同一文档家族整理。同一篇论文的多轮修订共同构成一个案例；agent 会去重重复下载，并标出正文相同、分数不同的记录。数值预测的后续开发以独立文章的留出校准及误差评估为基础。
+
+Report percentages are stored as observations, and historical ranges are organized by document family. Revisions of one essay form one case. The agent deduplicates downloads and flags matching prose with differing scores. Further development of numerical prediction starts with held-out calibration and error evaluation on independent documents.
+
+当前判断更适合回答“哪里与自己的文风不同、哪里与历史高亮相似、证据有多强”。评估方法和数值校准条件见[高亮倾向评估](skills/essay-in-your-voice/references/highlight-assessment.md)。报告口径依据 [Turnitin 对连续论述与高亮的说明](https://guides.turnitin.com/hc/en-us/articles/22774058814093-Using-the-AI-Writing-Report)。
+
+The review focuses on where a passage differs from the author’s voice, where it resembles previously highlighted text and how strong that evidence is. See [highlight-tendency assessment](skills/essay-in-your-voice/references/highlight-assessment.md) for the method and numerical-calibration requirements. Report definitions follow [Turnitin’s guidance on qualifying prose and highlights](https://guides.turnitin.com/hc/en-us/articles/22774058814093-Using-the-AI-Writing-Report).
 
 ## 上传哪些资料 / What to upload
 
@@ -214,6 +264,10 @@ opencode
 
 The result is a revised draft and a short explanation. Detailed evidence stays in the task folder as `voice-profile.md`, `report-ledger.md`, `highlight-patterns.md`, `paragraph-audit.md`, `revision-log.md` and `rubric-check.md`. Users can read the finished draft or ask why any paragraph was changed.
 
+选择预判时增加 `preflight-assessment.md`；选择仅措辞模式时增加区间清单和范围核查结果。文件由 agent 整理，用户继续按上传资料的方式使用即可。
+
+Preflight mode adds `preflight-assessment.md`; wording-only mode adds an edit-span manifest and scope-check result. The agent prepares these files, so users continue to work by uploading their materials.
+
 ## 从多轮高亮中学什么 / What repeated highlights reveal
 
 反复高亮片段值得检查的共同问题包括：方法宣布多而应用少、观察后重复概括、`this shows` 指代模糊、段段采用对称对比、结论逐项清点而回答不足。agent 将这些现象与作者样本、图像和来源一起检查，决定是否值得修改。
@@ -256,6 +310,18 @@ Developers can use the helper below to compare two UTF-8 TXT/Markdown versions a
 
 ```sh
 python scripts/compare_versions.py --before inputs/v1.txt --after inputs/v2.txt --output outputs/version-diff.json
+```
+
+安装的 skill 还包含两个 Python 标准库工具：`verify_wording_scope.py` 精确核验高亮区间授权，`summarize_report_history.py` 汇总私有报告记录并标出重复或冲突。两者位于 `skills/essay-in-your-voice/scripts/`；输入清单由 agent 自动生成。
+
+The installed skill includes two additional Python-standard-library helpers: `verify_wording_scope.py` checks exact highlight authorization, and `summarize_report_history.py` summarizes private report records and flags duplicates or conflicts. Both live in `skills/essay-in-your-voice/scripts/`; the agent creates their input manifests.
+
+开发验证使用以下命令，覆盖受保护文字、Unicode位置、换行、越界编辑、重复送检、隐藏分数及同正文分数差异等情况。
+
+Development checks use the command below and cover protected text, Unicode offsets, line endings, edits outside the allowed scope, duplicate submissions, hidden scores and differing scores on matching prose.
+
+```sh
+python -m unittest discover -s tests -v
 ```
 
 安装命令与资料链接核查日期：2026-11-01。skill 安装器参数依据 [Skills CLI 命令文档](https://github.com/vercel-labs/skills/blob/main/docs/commands.md)，各 agent 的安装方式依据上文链接的官方说明。
