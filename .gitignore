@@ -1,0 +1,14 @@
+# Private writing and generated analyses
+inputs/
+outputs/
+private/
+local-work/
+*.pdf
+*.docx
+*.doc
+*.ipynb
+*.log
+__pycache__/
+*.pyc
+.env
+.env.*
