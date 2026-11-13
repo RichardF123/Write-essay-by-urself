@@ -1,0 +1,50 @@
+[
+  {
+    "id": "revision-history",
+    "request": "Return the final essay prose. All supplied text may be edited; keep task content.",
+    "text": "This section compares two paintings. This avoids the previous draft's unsupported identification.",
+    "expected": {"action": "remove_editorial_aside", "preserve": ["comparison of two paintings"], "avoid": ["revision history in final prose", "new identity claim"]}
+  },
+  {
+    "id": "unprompted-defense",
+    "request": "Make the paragraph direct. No debate about the value of other works is part of this task.",
+    "text": "I examine two paintings. This does not mean other paintings have no value, nor that other methods are useless.",
+    "expected": {"action": "remove_unneeded_defense", "preserve": ["examine two paintings"], "avoid": ["invented selection rationale"]}
+  },
+  {
+    "id": "uncertain-identity",
+    "request": "Check for defensive writing. The source has not established the identity.",
+    "text": "The rider may be the owner.",
+    "expected": {"action": "keep", "preserve": ["uncertain identity"], "avoid": ["confirmed identity"]}
+  },
+  {
+    "id": "causal-limit",
+    "request": "Check for defensive writing. The survey is observational, and the task discusses causal interpretation.",
+    "text": "The survey shows an association between attendance and grades; it does not establish causation.",
+    "expected": {"action": "keep_substantive_limit", "preserve": ["association", "causation not established"], "avoid": ["attendance causes grades to rise"]}
+  },
+  {
+    "id": "frozen-text",
+    "request": "The supplied sentence is outside the allowed edit spans. Report issues only.",
+    "text": "This does not mean X, nor Y, nor Z.",
+    "expected": {"action": "report_only", "preserve": ["exact supplied text"], "avoid": ["unauthorized deletion"]}
+  },
+  {
+    "id": "reflection",
+    "request": "The assignment asks for an EWR reflection explaining how the plan was revised.",
+    "text": "I removed an unsupported claim after revising my plan.",
+    "expected": {"action": "keep", "preserve": ["revision experience"], "avoid": ["deleting requested reflection"]}
+  },
+  {
+    "id": "stacked-uncertainty",
+    "request": "Remove redundant qualification, retaining the unresolved identity.",
+    "text": "The figure might possibly be the owner.",
+    "expected": {"action": "simplify_qualification", "preserve": ["uncertain identity"], "avoid": ["the figure is the owner"]}
+  },
+  {
+    "id": "substantive-objection",
+    "request": "Polish wording only. The essay evaluates a published explanation of sadness from a downward gaze; keep its evidence critique.",
+    "text": "A downward gaze does not establish sadness, because it can also occur when a person looks at an object.",
+    "expected": {"action": "keep_substantive_objection", "preserve": ["gaze alone does not establish sadness", "alternative object-directed gaze"], "avoid": ["deleting the evidence critique as defensive", "claiming the person is sad"]}
+  }
+]

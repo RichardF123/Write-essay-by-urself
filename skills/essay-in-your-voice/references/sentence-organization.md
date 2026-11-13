@@ -50,4 +50,6 @@ Keep a compact revision memory: passage ID, proposed change, original anchor, ex
 
 Retain a clearer sentence even if it stays highlighted. Roll back an edit that becomes less natural, more abstract, ambiguous or inaccurate even if a nearby highlight disappears. Avoid cycling between the same formulations without new writing evidence. A report without a specific expression problem is a valid reason to keep wording.
 
+Apply the [finished-reader check](reader-facing-prose.md) before delivery. A repair should resolve the expression problem in the argument; its rationale belongs in the revision record rather than a new defensive tail in the essay.
+
 For a targeted request, audit all requested locations but edit only justified ones; record why a reviewed location is retained. Do not invent a fixed number of edits. Stop after the authorized pass and delivery. A user can request another pass, but continuing should respond to new feedback or a concrete unresolved issue rather than an automatic resubmission loop.

@@ -62,6 +62,10 @@ The agent matches the report to the draft, builds editable spans and verifies th
 
 When a revision still feels unlike you, the agent rereads the voice analysis and its original passages, checks how you connect observations, reasons, explanations and judgments, then decides how to organize the sentences. Useful repetition, first person and longer sentences stay where they serve your writing. The revision record explains each choice. See [sentence-organization calibration](skills/essay-in-your-voice/references/sentence-organization.md).
 
+交付前，agent 还会从读者角度检查正文：直接表达有依据的判断，将旧稿取舍和修改理由放入修改记录；对反复自我辩护、连续否定和层叠保守词作局部审阅。必要的事实限定与文献反驳按其论证作用保留。参见[成稿读者检查](skills/essay-in-your-voice/references/reader-facing-prose.md)。
+
+Before delivery, the agent reviews the prose from its reader’s perspective: state supported claims directly and keep drafting decisions in the revision record. It reviews repeated defenses, chains of negation and stacked qualifiers locally, preserving factual qualifications and substantive counterarguments according to their role. See the [finished-reader check](skills/essay-in-your-voice/references/reader-facing-prose.md).
+
 上传多轮报告后，agent 会分别列出“恰好两次”“至少两次”及连续高亮的位置，区分原文未改和改写后的对应内容，并记录两份报告之间尚未检测的中间稿。历史记录帮助安排复核顺序，最新报告和你的指令确定本轮可修改范围；已经取消高亮的受保护文字保留原样。这些记录由agent自动整理。
 
 With several reports, the agent lists passages highlighted exactly twice, at least twice and in consecutive rounds. It separates unchanged wording from rewritten counterparts and records untested drafts between reports. History guides review priorities; the latest report and your instructions define the current editing boundary. Protected passages that have cleared remain unchanged. The agent prepares these records automatically.

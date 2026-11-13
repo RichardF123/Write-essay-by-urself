@@ -71,6 +71,8 @@ In strict wording-only mode, the protection is stronger: report any factual or l
 
 Write concrete observations and the reasoning they support. Remove repeated conclusions rather than replacing useful repeated nouns with ornate synonyms. Do not impose a single paragraph formula, compulsory first person, sentence-length quotas, random variation, intentional errors or invented experience. Generic anti-AI advice yields to the author's evidenced style and the assignment.
 
+Before delivering prose, apply [reader-facing-prose.md](references/reader-facing-prose.md): keep drafting history and explanations of rejected edits in the revision record; write the current supported argument for its reader. Review chains of negations, hypothetical objections and stacked qualifiers by their function. Retain material uncertainty and substantive counterarguments, with wording grounded in the author's samples. This check operates inside the current editing boundary.
+
 Record each substantive edit with the original span, replacement, reason and checks. When the user asks for a complete revised document, provide it as well as the analysis. Keep the original file intact unless overwrite was requested.
 
 ## Verify content and deliver

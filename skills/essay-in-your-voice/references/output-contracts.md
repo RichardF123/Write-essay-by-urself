@@ -35,6 +35,7 @@ Cover every body paragraph. “Keep, no specific problem found” is a valid dec
 - Exact comparison of protected text; exceptions and why necessary.
 - Report status: matching fresh report / untested / unknown, without a promised score.
 - For sentence organization: old/new propositions and links, original style anchor, immediate predecessor comparison, and retain/revise/roll-back reason. A report transition alone is not a retention rule.
+- Finished-reader review: span | rhetorical function | evidence or real objection | meaning/scope effect | keep/rephrase/move-to-log/report | authorization. Keep editorial explanations outside the submitted prose unless the task requests reflection or revision history.
 
 ## rubric-check.md
 
