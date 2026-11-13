@@ -12,6 +12,141 @@ This skill grew out of a full essay revision process. It studies how the author 
 
 The main goal is writing that sounds more like its author: learn traceable expression habits from original samples and keep each edit within the user’s chosen scope. Author fit, content quality and report-highlight changes are recorded separately.
 
+## 安装本 skill / Install this skill
+
+[下载 ZIP / Download ZIP](https://github.com/RichardF123/Write-essay-by-urself/archive/refs/heads/main.zip) · [查看 skill / View skill](skills/essay-in-your-voice/SKILL.md)
+
+以下命令把 `essay-in-your-voice` 安装到你选择的 agent。先准备 [Node.js](https://nodejs.org/en/download) 和 [Git](https://git-scm.com/downloads)；按当前 [Skills CLI 文档](https://github.com/vercel-labs/skills)，Node.js 使用 22.20 或更新版本。`--global` 表示跨项目使用，删去它即可安装到当前项目。
+
+The commands below install `essay-in-your-voice` for your chosen agent. Set up [Node.js](https://nodejs.org/en/download) and [Git](https://git-scm.com/downloads) first. The current [Skills CLI documentation](https://github.com/vercel-labs/skills) requires Node.js 22.20 or later. `--global` makes the skill available across projects; omit it for a project installation.
+
+运行 `node --version` 确认当前终端使用的版本。更新 Node.js 后重新打开终端，让 `npx` 使用新版本。
+
+Run `node --version` to check the version used by your current terminal. After updating Node.js, reopen the terminal so `npx` uses the new version.
+
+### Codex
+
+在 PowerShell、macOS 或 Linux 终端运行：
+
+Run in PowerShell, a macOS terminal or a Linux terminal:
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent codex --global
+```
+
+### Claude Code
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent claude-code --global
+```
+
+### Cursor
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent cursor --global
+```
+
+### Gemini CLI
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent gemini-cli --global
+```
+
+### GitHub Copilot
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent github-copilot --global
+```
+
+### Windsurf
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent windsurf --global
+```
+
+### OpenCode
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent opencode --global
+```
+
+选择你正在使用的工具运行对应命令即可。安装器会显示目标路径；Windows 如需使用文件复制，可以在命令末尾加 `--copy`。安装后开启新会话，上传资料，再发送开始指令。支持技能选择器的宿主也可直接选择 `essay-in-your-voice`。
+
+Run the command for the tool you use. The installer shows the destination; append `--copy` to use file copies on Windows when helpful. Start a new session after installation, upload your materials and send the starter request. Hosts with a skill selector can also select `essay-in-your-voice` directly.
+
+### 查看与更新 / Inspect and update
+
+查看仓库中的 skill、检查 Codex 的全局安装、获取更新：
+
+List the repository’s skills, inspect the global Codex installation and update this skill:
+
+```sh
+npx skills add RichardF123/Write-essay-by-urself --list
+npx skills list --global --agent codex
+npx skills update essay-in-your-voice
+```
+
+### 手动下载 / Manual download
+
+也可以下载仓库，再把 `skills/essay-in-your-voice` 整个文件夹复制到宿主的技能目录。Codex 当前的个人目录是 `~/.agents/skills/`，Claude Code 是 `~/.claude/skills/`。完整路径和 agent 标识见 [Skills CLI 支持列表](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)及 [Codex 官方技能文档](https://developers.openai.com/codex/skills)。
+
+You can also download the repository and copy the entire `skills/essay-in-your-voice` folder into your host’s skill directory. The current personal directory is `~/.agents/skills/` for Codex and `~/.claude/skills/` for Claude Code. See the [Skills CLI agent list](https://github.com/vercel-labs/skills/blob/main/docs/agents.md) and [official Codex skills documentation](https://developers.openai.com/codex/skills) for paths and agent identifiers.
+
+```sh
+git clone https://github.com/RichardF123/Write-essay-by-urself.git
+```
+
+## 安装 agent 工具 / Install an agent tool
+
+已经有 agent 的用户可以直接使用上一节。刚开始使用的用户，可选择下面一种工具安装，按该工具提示完成登录，再安装本 skill。
+
+If you already use an agent, follow the previous section. If you are starting fresh, choose a tool below, complete its sign-in flow and then install this skill.
+
+**Codex CLI**：使用 npm 安装，运行 `codex` 启动。[官方安装文档](https://developers.openai.com/codex/cli)。
+
+**Codex CLI**: Install with npm and run `codex` to start. See the [official installation guide](https://developers.openai.com/codex/cli).
+
+```sh
+npm install -g @openai/codex
+codex
+```
+
+**Claude Code**：Windows PowerShell 使用下面第一段，macOS/Linux 使用第二段。[官方安装文档](https://code.claude.com/docs/en/setup)。
+
+**Claude Code**: Use the first block in Windows PowerShell or the second on macOS/Linux. See the [official installation guide](https://code.claude.com/docs/en/setup).
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+claude
+```
+
+```sh
+curl -fsSL https://claude.ai/install.sh | bash
+claude
+```
+
+**Gemini CLI**：安装后运行 `gemini`。[官方安装文档](https://geminicli.com/docs/get-started/installation/)。
+
+**Gemini CLI**: Run `gemini` after installation. See the [official installation guide](https://geminicli.com/docs/get-started/installation/).
+
+```sh
+npm install -g @google/gemini-cli
+gemini
+```
+
+**OpenCode**：以下为官方文档中的 OpenCode 1 npm 安装方式，运行 `opencode` 启动。[安装与版本说明](https://opencode.ai/docs/)。
+
+**OpenCode**: The following npm command installs OpenCode 1 as documented upstream. Run `opencode` to start. See the [installation and version notes](https://opencode.ai/docs/).
+
+```sh
+npm install -g opencode-ai
+opencode
+```
+
+**编辑器用户**：可从 [Cursor](https://cursor.com/downloads)、[Windsurf](https://windsurf.com/download) 或 [GitHub Copilot 设置指南](https://docs.github.com/en/copilot/quickstart)完成工具安装，再运行对应的 skill 安装命令。
+
+**Editor users**: Set up your tool through [Cursor](https://cursor.com/downloads), [Windsurf](https://windsurf.com/download) or the [GitHub Copilot setup guide](https://docs.github.com/en/copilot/quickstart), then run the matching skill installation command.
+
 ## 本地RAG / Local RAG
 
 skill 已内置本地写作证据检索。agent 从你上传的原始写作中选取可定位的段落，按语言、文体、表达功能和词语检索，再带着原文依据检查每个修改单元。写完后分别核查原意、个人风格、正文表达和前后衔接，并精确验证受保护文字。数据更新后，旧检查包会失效并重新准备。
@@ -134,141 +269,6 @@ Start with your own writing samples, current essay and assignment requirements. 
 直接上传 PDF、DOCX、TXT、Markdown 或笔记本等宿主支持的格式。agent 使用可用的文件工具提取正文，区分本人论述、题干、引用、代码与输出。跨文体样本用于理解推理习惯，同文体样本用于细化表达。
 
 Upload PDFs, DOCX files, text, Markdown, notebooks or other formats supported by your host. The agent uses available file tools to extract prose and distinguish your writing from prompts, quotations, code and outputs. It uses cross-genre samples to understand reasoning and closer genre matches to refine expression.
-
-## 安装本 skill / Install this skill
-
-以下命令把 `essay-in-your-voice` 安装到你选择的 agent。先准备 [Node.js](https://nodejs.org/en/download) 和 [Git](https://git-scm.com/downloads)；按当前 [Skills CLI 文档](https://github.com/vercel-labs/skills)，Node.js 使用 22.20 或更新版本。`--global` 表示跨项目使用，删去它即可安装到当前项目。
-
-The commands below install `essay-in-your-voice` for your chosen agent. Set up [Node.js](https://nodejs.org/en/download) and [Git](https://git-scm.com/downloads) first. The current [Skills CLI documentation](https://github.com/vercel-labs/skills) requires Node.js 22.20 or later. `--global` makes the skill available across projects; omit it for a project installation.
-
-运行 `node --version` 确认当前终端使用的版本。更新 Node.js 后重新打开终端，让 `npx` 使用新版本。
-
-Run `node --version` to check the version used by your current terminal. After updating Node.js, reopen the terminal so `npx` uses the new version.
-
-### Codex
-
-在 PowerShell、macOS 或 Linux 终端运行：
-
-Run in PowerShell, a macOS terminal or a Linux terminal:
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent codex --global
-```
-
-### Claude Code
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent claude-code --global
-```
-
-### Cursor
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent cursor --global
-```
-
-### Gemini CLI
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent gemini-cli --global
-```
-
-### GitHub Copilot
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent github-copilot --global
-```
-
-### Windsurf
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent windsurf --global
-```
-
-### OpenCode
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --skill essay-in-your-voice --agent opencode --global
-```
-
-选择你正在使用的工具运行对应命令即可。安装器会显示目标路径；Windows 如需使用文件复制，可以在命令末尾加 `--copy`。安装后开启新会话，上传资料，再发送开始指令。支持技能选择器的宿主也可直接选择 `essay-in-your-voice`。
-
-Run the command for the tool you use. The installer shows the destination; append `--copy` to use file copies on Windows when helpful. Start a new session after installation, upload your materials and send the starter request. Hosts with a skill selector can also select `essay-in-your-voice` directly.
-
-### 查看与更新 / Inspect and update
-
-查看仓库中的 skill、检查 Codex 的全局安装、获取更新：
-
-List the repository’s skills, inspect the global Codex installation and update this skill:
-
-```sh
-npx skills add RichardF123/Write-essay-by-urself --list
-npx skills list --global --agent codex
-npx skills update essay-in-your-voice
-```
-
-### 手动下载 / Manual download
-
-也可以下载仓库，再把 `skills/essay-in-your-voice` 整个文件夹复制到宿主的技能目录。Codex 当前的个人目录是 `~/.agents/skills/`，Claude Code 是 `~/.claude/skills/`。完整路径和 agent 标识见 [Skills CLI 支持列表](https://github.com/vercel-labs/skills/blob/main/docs/agents.md)及 [Codex 官方技能文档](https://developers.openai.com/codex/skills)。
-
-You can also download the repository and copy the entire `skills/essay-in-your-voice` folder into your host’s skill directory. The current personal directory is `~/.agents/skills/` for Codex and `~/.claude/skills/` for Claude Code. See the [Skills CLI agent list](https://github.com/vercel-labs/skills/blob/main/docs/agents.md) and [official Codex skills documentation](https://developers.openai.com/codex/skills) for paths and agent identifiers.
-
-```sh
-git clone https://github.com/RichardF123/Write-essay-by-urself.git
-```
-
-[下载 ZIP / Download ZIP](https://github.com/RichardF123/Write-essay-by-urself/archive/refs/heads/main.zip)
-
-## 安装 agent 工具 / Install an agent tool
-
-已经有 agent 的用户可以直接使用上一节。刚开始使用的用户，可选择下面一种工具安装，按该工具提示完成登录，再安装本 skill。
-
-If you already use an agent, follow the previous section. If you are starting fresh, choose a tool below, complete its sign-in flow and then install this skill.
-
-**Codex CLI**：使用 npm 安装，运行 `codex` 启动。[官方安装文档](https://developers.openai.com/codex/cli)。
-
-**Codex CLI**: Install with npm and run `codex` to start. See the [official installation guide](https://developers.openai.com/codex/cli).
-
-```sh
-npm install -g @openai/codex
-codex
-```
-
-**Claude Code**：Windows PowerShell 使用下面第一段，macOS/Linux 使用第二段。[官方安装文档](https://code.claude.com/docs/en/setup)。
-
-**Claude Code**: Use the first block in Windows PowerShell or the second on macOS/Linux. See the [official installation guide](https://code.claude.com/docs/en/setup).
-
-```powershell
-irm https://claude.ai/install.ps1 | iex
-claude
-```
-
-```sh
-curl -fsSL https://claude.ai/install.sh | bash
-claude
-```
-
-**Gemini CLI**：安装后运行 `gemini`。[官方安装文档](https://geminicli.com/docs/get-started/installation/)。
-
-**Gemini CLI**: Run `gemini` after installation. See the [official installation guide](https://geminicli.com/docs/get-started/installation/).
-
-```sh
-npm install -g @google/gemini-cli
-gemini
-```
-
-**OpenCode**：以下为官方文档中的 OpenCode 1 npm 安装方式，运行 `opencode` 启动。[安装与版本说明](https://opencode.ai/docs/)。
-
-**OpenCode**: The following npm command installs OpenCode 1 as documented upstream. Run `opencode` to start. See the [installation and version notes](https://opencode.ai/docs/).
-
-```sh
-npm install -g opencode-ai
-opencode
-```
-
-**编辑器用户**：可从 [Cursor](https://cursor.com/downloads)、[Windsurf](https://windsurf.com/download) 或 [GitHub Copilot 设置指南](https://docs.github.com/en/copilot/quickstart)完成工具安装，再运行对应的 skill 安装命令。
-
-**Editor users**: Set up your tool through [Cursor](https://cursor.com/downloads), [Windsurf](https://windsurf.com/download) or the [GitHub Copilot setup guide](https://docs.github.com/en/copilot/quickstart), then run the matching skill installation command.
 
 ## 自动完成的流程 / What the agent handles
 
