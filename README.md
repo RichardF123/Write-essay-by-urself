@@ -12,6 +12,16 @@ This skill grew out of a full essay revision process. It studies how the author 
 
 The main goal is writing that sounds more like its author: learn traceable expression habits from original samples and keep each edit within the user’s chosen scope. Author fit, content quality and report-highlight changes are recorded separately.
 
+## 本地RAG / Local RAG
+
+skill 已内置本地写作证据检索。agent 从你上传的原始写作中选取可定位的段落，按语言、文体、表达功能和词语检索，再带着原文依据检查每个修改单元。写完后分别核查原意、个人风格、正文表达和前后衔接，并精确验证受保护文字。数据更新后，旧检查包会失效并重新准备。
+
+The skill includes local writing-evidence retrieval. Your agent selects locatable passages from uploaded originals, retrieves by language, genre, expression function and wording, then uses those originals to review each editing unit. It checks meaning, personal voice, reader-facing prose and context separately, alongside exact protected-text verification. Store updates invalidate earlier packets so the agent prepares fresh evidence.
+
+检索使用 Python 标准库和 SQLite FTS5，资料存放在私人任务目录。原始写作、用户偏好和助手修订稿分开处理；模型与数据库服务均无需另外下载。用户继续上传资料即可，agent 负责建库、记录来源和运行检查。流程与命令见[本地检索](skills/essay-in-your-voice/references/local-retrieval.md)和[写作检查点](skills/essay-in-your-voice/references/voice-checkpoints.md)。
+
+Retrieval uses Python's standard library and SQLite FTS5, with data kept in a private task folder. Originals, explicit preferences and assisted revisions have separate roles. It runs without downloading a model or deploying a database service. Users keep supplying files; the agent builds the store, records provenance and runs the checks. See [local retrieval](skills/essay-in-your-voice/references/local-retrieval.md) and [voice checkpoints](skills/essay-in-your-voice/references/voice-checkpoints.md).
+
 ## 上传即可开始 / Upload and start
 
 安装后，把手头资料上传到支持附件的 agent，发送下面一句即可。终端 agent 可以读取你放进工作目录的文件。文件分类、文字提取、版本匹配、文风分析、逐段诊断、修订记录和评分核查都交给 agent 完成。
@@ -326,9 +336,9 @@ Developers can use the helper below to compare two UTF-8 TXT/Markdown versions a
 python scripts/compare_versions.py --before inputs/v1.txt --after inputs/v2.txt --output outputs/version-diff.json
 ```
 
-安装的 skill 还包含两个 Python 标准库工具：`verify_wording_scope.py` 精确核验高亮区间授权，`summarize_report_history.py` 汇总私有报告记录并标出重复或冲突。两者位于 `skills/essay-in-your-voice/scripts/`；输入清单由 agent 自动生成。
+安装的 skill 包含四个 Python 标准库工具：`voice_rag.py` 建立本地写作证据库并运行检查包；`verify_wording_scope.py` 精确核验高亮区间授权；`summarize_report_history.py` 汇总报告记录；`summarize_repeated_highlights.py` 对照重复高亮。工具位于 `skills/essay-in-your-voice/scripts/`，输入由 agent 自动生成。
 
-The installed skill includes two additional Python-standard-library helpers: `verify_wording_scope.py` checks exact highlight authorization, and `summarize_report_history.py` summarizes private report records and flags duplicates or conflicts. Both live in `skills/essay-in-your-voice/scripts/`; the agent creates their input manifests.
+The installed skill includes four Python-standard-library helpers: `voice_rag.py` manages local evidence and review packets; `verify_wording_scope.py` checks exact highlight authorization; `summarize_report_history.py` summarizes report history; and `summarize_repeated_highlights.py` compares recurring highlights. They live in `skills/essay-in-your-voice/scripts/`; the agent prepares their inputs.
 
 开发验证使用以下命令，覆盖受保护文字、Unicode位置、换行、越界编辑、重复送检、隐藏分数及同正文分数差异等情况。
 

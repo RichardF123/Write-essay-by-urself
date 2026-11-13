@@ -56,3 +56,11 @@ Use actual word-count rules; distinguish main text from captions, references and
 - `verify_wording_scope.py` verifies that every edit lies within authorization and reconstructs the exact candidate. Report protected text as preserved only after this or an equivalent exact check passes.
 - Manual semantic check: facts, comparisons, uncertainty, attribution, causal relations and neighboring frozen sentences.
 - Record the requested target language level/mark as effort guidance, separately from actual rubric assessment.
+
+## Local RAG evidence and review packets
+
+- Private store: owner, source role/authorship, document family, language/genre, raw snapshot hash and exact chunk offsets; quotes/prompts excluded by narrative-span selection.
+- Evidence output: eligible raw anchors, locators, source metadata, retrieval reasons and separate explicit preferences. Ranking is not style confidence.
+- Packet: frozen text/hash, permitted spans, current brief, evidence IDs, preferences, store revision and packet hash.
+- Candidate review: `semantics`, `voice`, `reader_facing`, `context`, each with status and concrete reason. A voice pass cites packet evidence IDs.
+- Audit: exact scope reconstruction, source-store freshness, agent-assessed reviews, ready state and candidate hash. No style certification is implied by the mechanical check.

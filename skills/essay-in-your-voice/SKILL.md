@@ -1,6 +1,6 @@
 ---
 name: essay-in-your-voice
-description: Learn an author's vocabulary, sentence patterns and reasoning from original samples; compare matched AI reports; provide evidence-based highlight-tendency reviews; and revise essays in the author's voice. Supports strict highlighted-wording-only edits that freeze other text and preserve argument and assignment requirements.
+description: Learn an author's vocabulary, sentence patterns and reasoning from original samples with private local RAG; retrieve writing evidence, check drafts against it, compare matched AI reports, and revise essays in the author's voice. Supports strict highlighted-wording-only edits that freeze other text and preserve argument and assignment requirements.
 ---
 
 # Essay in your voice
@@ -32,6 +32,10 @@ Save task outputs privately outside public tracked files. Do not upload writing 
 ## Build an evidence-based voice profile
 
 Read [voice-analysis.md](references/voice-analysis.md). Inspect original prose before describing its style. Analyze vocabulary and syntax **with the function they serve**: conditions, explanations, comparisons, challenges, qualifications and decisions. Group by genre rather than averaging notes, technical reports and essays together.
+
+When original samples are available, use the built-in local RAG workflow in [local-retrieval.md](references/local-retrieval.md). The agent extracts eligible narrative spans, prepares the source metadata, initializes a private owner-bound store, and retrieves exact anchors by language, genre and expression function. Keep reports, assisted revisions and explicit preferences separate from original evidence. Users upload materials; preparing manifests and running the helper are agent work. With missing extraction or SQLite capabilities, retain the manual evidence workflow and name the specific missing capability.
+
+Follow [voice-checkpoints.md](references/voice-checkpoints.md) before and after local revision: build a fixed evidence packet, generate authorized substitutions, record content/voice/reader-facing/context checks, and run `scripts/voice_rag.py audit`. Verify that the deliverable is the checked candidate. Refresh evidence after source or preference changes. These checkpoints are agent-orchestrated; semantic and style assessments remain evidence-based agent judgments.
 
 Produce `voice-profile.md` with sample locators, short evidence anchors, counterexamples, confidence and operational editing rules. Distinguish observed habits from current user preferences. Do not invent quotations, measured statistics or absolute bans from absent words. Simple vocabulary does not imply uniformly short sentences. If an existing profile is supplied, verify its anchors and context before reusing it.
 

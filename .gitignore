@@ -8,6 +8,12 @@ local-work/
 *.doc
 *.ipynb
 *.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
 __pycache__/
 *.pyc
 .env
@@ -20,3 +26,6 @@ __pycache__/
 /revision-log.md
 /rubric-check.md
 /highlight-patterns.md
+/voice-packet.json
+/voice-evidence.json
+/voice-audit.json
