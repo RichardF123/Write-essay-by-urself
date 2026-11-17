@@ -16,7 +16,7 @@ Review the candidate against the original and record four independent judgments:
 
 | Review key | Required check |
 | --- | --- |
-| `semantics` | Preserve propositions, actors, facts, citations, comparison units, inference strength and substantive objections within the current scope. |
+| `semantics` | Preserve propositions, actors, research stage, facts, citations, comparison units, reason-to-choice and condition-to-result links, inference strength, the target of each qualification, and substantive objections within the current scope. |
 | `voice` | Explain which eligible original anchors support the changed vocabulary, clause relationship or stance; cite evidence IDs for a pass when evidence exists. Do not infer voice fit from generic simplicity. |
 | `reader_facing` | Present the current argument for its reader. Check editing-history leakage, invented objections, redundant negations and stacked qualifiers by function; preserve material uncertainty and real counterarguments. |
 | `context` | Read preceding and following text for antecedents, transitions, repetition and paragraph purpose. Resolve problems only inside allowed spans. |

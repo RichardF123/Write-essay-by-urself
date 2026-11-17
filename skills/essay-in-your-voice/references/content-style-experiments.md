@@ -10,6 +10,8 @@ To examine an uncertain habit, pair an eligible original passage with a neutral 
 
 The pair makes topic control inspectable; it does not establish pure style. An original and an unrelated generic essay are not a useful contrast. Same prompt also does not guarantee same propositions. Preserve meaningful logical links even when they are part of the author's writing habits.
 
+Write relation anchors explicitly, such as “interest in A is the reason for choosing B,” rather than listing the interest and choice as unrelated facts. Check that the candidate retains the connection and the target of each qualification. A list of preserved entities alone cannot establish preservation of reasoning.
+
 ## Validate pairs and evaluation splits
 
 `scripts/voice_pairs.py` reads the existing owner-bound SQLite store without changing it. It checks original narrative bounds, confirmed authorship, source hashes, explicit semantic-review records, numerical tokens and requested exact literals. It separates document families, identical source snapshots and duplicate source text across train/validation/test. Store holdouts are test-only. One language and genre is allowed per dataset.
@@ -48,11 +50,19 @@ Choose splits by full document family before selecting layer, strength or prefer
 
 ## Optional activation backend
 
-`scripts/voice_steering.py` provides `extract` and `generate` for a local model exposing `model.layers`, such as Qwen2.5 through Transformers. It uses the existing Python environment with torch and transformers when available; it does not install packages, download models or use a remote service. Resolve the needed environment in the user's task. Keep this dependency optional for the normal skill.
+`scripts/voice_steering.py` provides `baseline`, `extract` and `generate` for a model exposing `model.layers`, such as Qwen2.5 through Transformers. `baseline` needs no writing samples or style vector, so content fidelity can be inspected before extracting style. It uses the existing Python environment with torch and transformers when available; it does not install packages, download models or contact a remote service. An explicitly authorized remote experiment may run the same scripts in an isolated server workspace. Resolve its environment and upload only the necessary selected excerpts. Keep this dependency optional for the normal skill.
 
 The pilot extracts the last-token layer activation from each original/neutral text, averages differences within each training family, then averages families and normalizes the vector. For paragraph-level PDF extraction it defaults to collapsing whitespace on both sides, while retaining exact originals in the provenance record; the chosen normalization is stored in the vector. This prevents PDF line wrapping or a trailing newline from being mistaken for personal style. Use `--text-normalization strip` or `none` only when preserving that whitespace is intentional. This is an explicitly recorded engineering choice, not an exact reproduction of StyleVector. It uses only train pairs for extraction and refuses silent truncation. It does not update model weights. The generation hook changes the last prefill position and subsequent cached generation positions; zero strength installs no hook and is checked against a separate unhooked run.
 
 The vector records full local model/tokenizer file hashes, runtime, dtype, layer, dataset identity and extraction rule. Changing those conditions requires re-extraction and validation. This first backend supports BF16/FP32 eager execution; quantized or other model layouts need a separately tested implementation.
+
+The stored direction has unit norm, so `--strengths 1` is not equivalent to multiplying an unnormalized difference by one in another paper. Use the recorded `raw_norm` to understand scale, then perform a bounded validation-only sweep while checking content and grammar. Identical greedy text at a weak strength establishes only that tested setting; do not infer a universal absence of effect or increase strength merely to force different wording.
+
+```sh
+python scripts/voice_steering.py baseline --model LOCAL_SNAPSHOT --tasks PRIVATE/validation-tasks.json --output PRIVATE/baseline.json
+```
+
+Review the baseline before the following steps:
 
 ```sh
 python scripts/voice_steering.py extract --model LOCAL_SNAPSHOT --db PRIVATE/voice.sqlite3 --owner WRITER --input PRIVATE/pairs.json --layers 8 14 20 --output PRIVATE/vector.json
@@ -63,7 +73,9 @@ Tasks are `{"tasks": [...]}` with `task_id`, `language`, `genre`, and chat `mess
 
 ## Compare methods before changing the default
 
-First run a zero-strength-only control (`generate --strengths 0`) on a small validation task with explicit observations and review it against the content contract. If the unsteered model reverses a fact, invents a motive, or merges separate scenes, qualify the content-generation setup before tuning style. Strengthen the content input or test a more capable base model, then repeat this baseline check. A better-sounding steered answer does not repair an unqualified comparison. This is an agent semantic review, not an automatic verdict from token differences.
+First run `baseline` (or an existing vector's `generate --strengths 0`) on a small validation task with explicit observations and review it against the content contract. If the unsteered model reverses a fact, invents a motive, or merges separate scenes, qualify the content-generation setup before tuning style. Strengthen the content input or test a more capable base model, then repeat this baseline check. Outputs record whether generation ended with EOS or exhausted the token budget; a truncated passage is not a complete writing sample. A better-sounding steered answer does not repair an unqualified comparison. This is an agent semantic review, not an automatic verdict from token differences.
+
+For essay refinement, include a faithful draft paragraph and explicit content anchors rather than relying only on a loose notes-to-paragraph request. Retain research-stage verbs, negative qualifications, comparison scope and separate scenes. If baseline feedback leads to a stronger instruction or content representation, preserve the earlier run and label the retest as development; do not call the revised tasks untouched held-out evaluation. Apply the same strengthened input to every comparison arm.
 
 Use the same model, content, generation budget and predeclared settings for plain generation, profile-only, RAG, steering and RAG-plus-steering. An initial narrow pilot may test only plain versus steering; report the missing comparisons. For a full evaluation, separately record user-blind style preferences, semantic preservation, task quality, grammar and topic-specific carryover. Add cross-topic inputs and, when justified, shuffled-pair or random-direction controls. Good authorship classification or low detector scores are not equivalent to a successful style transfer.
 

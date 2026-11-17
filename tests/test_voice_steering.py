@@ -10,6 +10,14 @@ HAS_TORCH = importlib.util.find_spec('torch') is not None
 
 
 class ExtractionTextTests(unittest.TestCase):
+    def test_eos_at_budget_is_a_completed_answer(self):
+        self.assertEqual(steering.finish_reason([4, 9], [8, 9], 2), 'eos')
+
+    def test_budget_exhaustion_without_eos_is_truncation(self):
+        self.assertEqual(steering.finish_reason([4, 5], 9, 2), 'length')
+
+    def test_empty_output_is_not_eos(self):
+        self.assertEqual(steering.finish_reason([], None, 8), 'other')
     def test_pdf_linewraps_do_not_become_style(self):
         original = 'I compare\n two trees. \n'
         self.assertEqual(steering.extraction_text(original, 'collapse-whitespace'),

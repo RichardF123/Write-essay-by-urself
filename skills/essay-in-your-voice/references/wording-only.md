@@ -24,6 +24,10 @@ Preserve the argument, comparison units, facts, numbers, dates, citations, attri
 
 Do not add observations, examples, personal experiences, research steps, new scholarship or new reasons for a claim. Existing logic problems are reported separately. Explicitly protected text stays frozen even if the agent thinks a correction would improve it.
 
+Keep research stage explicit: choosing a dataset, planning an analysis, performing it and finding a result are different propositions. Do not turn “I chose” into “I analyzed,” or omit a qualification about what has not been established. For a small local model that compresses or expands the draft, supply a short claim-by-claim content contract alongside the original and require the same analysis order. Review retained qualifiers and actor relationships directly; preserving keywords or producing fluent prose is insufficient.
+
+Record relationships as well as facts: “interest A explains choice B” is more specific than separately mentioning A and B. Preserve the reason-to-choice link, condition-to-result link and the claim each qualification limits. Removing an explicit connection can weaken the author's reasoning even when the nouns, numbers and individual statements remain.
+
 When the user explicitly asks to revise every highlight, include each readable highlighted span in the review. Use the smallest natural change that preserves it; where only a conventional title or a fixed source name is highlighted, retain required names and identifiers and explain the constrained result rather than inventing replacement facts.
 
 ## Apply personal voice

@@ -60,6 +60,13 @@ def extraction_text(text, mode):
     return text
 
 
+def finish_reason(tokens, eos_ids, limit):
+    ids = eos_ids if isinstance(eos_ids, (list, tuple)) else [eos_ids]
+    if tokens and tokens[-1] in ids:
+        return 'eos'
+    return 'length' if len(tokens) >= limit else 'other'
+
+
 @contextmanager
 def intervention(layer, vector, strength):
     require(math.isfinite(strength), 'Strength must be finite.')
@@ -191,6 +198,8 @@ def generate(a):
                 rows.append({'task_id': task['task_id'], 'strength': alpha, 'layer': a.layer,
                              'seconds': time.perf_counter() - start,
                              'max_new_tokens': a.max_new_tokens,
+                             'finish_reason': finish_reason(generated, model.generation_config.eos_token_id,
+                                                            a.max_new_tokens),
                              'text': tok.decode(generated, skip_special_tokens=True), 'token_ids': generated})
                 print(f"Completed {task['task_id']} strength={alpha}, {len(generated)} tokens", flush=True)
     write_new(a.output, {'format': 'voice-generation-pilot-v1', 'runtime': runtime,
@@ -201,10 +210,44 @@ def generate(a):
                         'interpretation': 'Compare style and semantic quality separately; no automatic quality verdict.'})
 
 
+def baseline(a):
+    require(not Path(a.output).exists(), 'Output already exists.')
+    identity = model_identity(a.model)
+    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads)
+    tasks = read_json(a.tasks)
+    require(isinstance(tasks, dict) and isinstance(tasks.get('tasks'), list) and tasks['tasks'],
+            'Supply nonempty tasks.')
+    rows = []
+    if a.device == 'cuda':
+        torch.cuda.reset_peak_memory_stats()
+    with torch.inference_mode():
+        for task in tasks['tasks']:
+            prompt = tok.apply_chat_template(task['messages'], tokenize=False, add_generation_prompt=True)
+            inputs = tok(prompt, return_tensors='pt', add_special_tokens=False).to(a.device)
+            require(inputs['input_ids'].shape[1] <= a.max_tokens, 'Task prompt too long.')
+            if a.device == 'cuda':
+                torch.cuda.synchronize()
+            start = time.perf_counter()
+            output = model.generate(**inputs, max_new_tokens=a.max_new_tokens, do_sample=False,
+                                    use_cache=True, pad_token_id=tok.eos_token_id)
+            if a.device == 'cuda':
+                torch.cuda.synchronize()
+            tokens = output[0, inputs['input_ids'].shape[1]:].tolist()
+            rows.append({'task_id': task['task_id'], 'text': tok.decode(tokens, skip_special_tokens=True),
+                         'token_ids': tokens, 'seconds': time.perf_counter() - start,
+                         'finish_reason': finish_reason(tokens, model.generation_config.eos_token_id,
+                                                        a.max_new_tokens)})
+            print(f"Completed baseline {task['task_id']}, {len(tokens)} tokens", flush=True)
+    write_new(a.output, {'format': 'voice-content-baseline-v1', 'identity': identity,
+                        'runtime': runtime, 'tasks_sha256': digest(tasks), 'rows': rows,
+                        'peak_allocated_bytes': torch.cuda.max_memory_allocated() if a.device == 'cuda' else None,
+                        'interpretation': 'Unsteered content baseline; review semantics before comparing styles.'})
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     subs = p.add_subparsers(dest='command', required=True)
-    for name in ('extract', 'generate'):
+    for name in ('extract', 'generate', 'baseline'):
         cmd = subs.add_parser(name)
         cmd.add_argument('--model', required=True)
         cmd.add_argument('--dtype', choices=['bfloat16', 'float32'], default='bfloat16')
@@ -224,8 +267,11 @@ def main():
     g.add_argument('--layer', type=int, required=True)
     g.add_argument('--strengths', type=float, nargs='+', default=[0, 0.5, 1.0])
     g.add_argument('--max-new-tokens', type=int, default=160)
+    b = subs.choices['baseline']
+    b.add_argument('--tasks', required=True)
+    b.add_argument('--max-new-tokens', type=int, default=256)
     a = p.parse_args()
-    (extract if a.command == 'extract' else generate)(a)
+    {'extract': extract, 'generate': generate, 'baseline': baseline}[a.command](a)
 
 
 if __name__ == '__main__':
