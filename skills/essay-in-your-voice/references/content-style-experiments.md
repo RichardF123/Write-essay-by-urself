@@ -63,6 +63,8 @@ Tasks are `{"tasks": [...]}` with `task_id`, `language`, `genre`, and chat `mess
 
 ## Compare methods before changing the default
 
+First run a zero-strength-only control (`generate --strengths 0`) on a small validation task with explicit observations and review it against the content contract. If the unsteered model reverses a fact, invents a motive, or merges separate scenes, qualify the content-generation setup before tuning style. Strengthen the content input or test a more capable base model, then repeat this baseline check. A better-sounding steered answer does not repair an unqualified comparison. This is an agent semantic review, not an automatic verdict from token differences.
+
 Use the same model, content, generation budget and predeclared settings for plain generation, profile-only, RAG, steering and RAG-plus-steering. An initial narrow pilot may test only plain versus steering; report the missing comparisons. For a full evaluation, separately record user-blind style preferences, semantic preservation, task quality, grammar and topic-specific carryover. Add cross-topic inputs and, when justified, shuffled-pair or random-direction controls. Good authorship classification or low detector scores are not equivalent to a successful style transfer.
 
 Steered text is a candidate. For a finished edit it still needs the original skill's semantic, voice, reader-facing and context reviews, exact authorized-span check, and artifact QA. A full generated paragraph cannot replace protected wording. Do not publish a feature as a measured voice improvement on the basis of successful extraction, changed token IDs, or one attractive output.

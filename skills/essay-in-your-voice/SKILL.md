@@ -47,7 +47,7 @@ When the user says edits still do not sound like them, reread the existing profi
 
 For optional external profile/retrieval tools, read [integrations.md](references/integrations.md). Core analysis must still work from user-provided samples without those tools.
 
-For topic/voice confusion, cross-topic evaluation or an explicit activation-steering experiment, read [content-controlled voice experiments](references/content-style-experiments.md). Separate topic vocabulary from transferable expression functions, review original/neutral pairs against a content contract, and split full document families before tuning. Optional local steering is a candidate-generation backend; normal editing retains the existing RAG and scope checks. Successful vector extraction is not evidence of improved author fit.
+For topic/voice confusion, cross-topic evaluation or an explicit activation-steering experiment, read [content-controlled voice experiments](references/content-style-experiments.md). Separate topic vocabulary from transferable expression functions, review original/neutral pairs against a content contract, and split full document families before tuning. Qualify the unsteered model's content fidelity before comparing styles. Optional local steering is a candidate-generation backend; normal editing retains the existing RAG and scope checks. Successful vector extraction is not evidence of improved author fit.
 
 ## Compare reports when supplied
 
