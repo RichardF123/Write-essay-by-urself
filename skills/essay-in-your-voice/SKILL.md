@@ -39,11 +39,15 @@ Follow [voice-checkpoints.md](references/voice-checkpoints.md) before and after 
 
 Produce `voice-profile.md` with sample locators, short evidence anchors, counterexamples, confidence and operational editing rules. Distinguish observed habits from current user preferences. Do not invent quotations, measured statistics or absolute bans from absent words. Simple vocabulary does not imply uniformly short sentences. If an existing profile is supplied, verify its anchors and context before reusing it.
 
+Record topic-specific vocabulary separately from transferable expression habits. Repeated technical terms in one project do not establish cross-topic voice evidence; check how the author explains, compares and qualifies across independent originals.
+
 Include a small set of evidence-backed calibration anchors: the author's wording, the function it performs, and a meaning-preserving adaptation appropriate to the essay. Test the proposed rules against a held-out original passage when available. Preserve correct reasoning links and necessary technical terms. Do not treat assistant revisions as new independent proof of the author's style, and do not repeatedly declare that all formulaic patterns have disappeared without checking the delivered text.
 
 When the user says edits still do not sound like them, reread the existing profile and its relevant original anchors before another pass. For sentence organization, repeated highlights or several revision rounds, read [sentence-organization.md](references/sentence-organization.md). Diagnose clause relationships and sentence roles before substituting vocabulary; shorter, more active or less first-person prose is not automatically a closer match.
 
 For optional external profile/retrieval tools, read [integrations.md](references/integrations.md). Core analysis must still work from user-provided samples without those tools.
+
+For topic/voice confusion, cross-topic evaluation or an explicit activation-steering experiment, read [content-controlled voice experiments](references/content-style-experiments.md). Separate topic vocabulary from transferable expression functions, review original/neutral pairs against a content contract, and split full document families before tuning. Optional local steering is a candidate-generation backend; normal editing retains the existing RAG and scope checks. Successful vector extraction is not evidence of improved author fit.
 
 ## Compare reports when supplied
 

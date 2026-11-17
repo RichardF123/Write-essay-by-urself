@@ -157,6 +157,16 @@ The skill includes local writing-evidence retrieval. Your agent selects locatabl
 
 Retrieval uses Python's standard library and SQLite FTS5, with data kept in a private task folder. Originals, explicit preferences and assisted revisions have separate roles. It runs without downloading a model or deploying a database service. Users keep supplying files; the agent builds the store, records provenance and runs the checks. See [local retrieval](skills/essay-in-your-voice/references/local-retrieval.md) and [voice checkpoints](skills/essay-in-your-voice/references/voice-checkpoints.md).
 
+## 内容与文风分开检查 / Separate content from voice
+
+agent 会把主题术语与可迁移的表达习惯分别记录。需要进一步校准时，可将原作和保留相同事实、条件与判断力度的通用表达配对，按完整文章划分提取、验证和测试集，检查换题材后是否仍像你。新增工具会核对原作来源、数字、配对两侧的跨集合重复及语义审阅记录。你继续上传资料，agent 负责准备与检查。
+
+The agent records topic vocabulary separately from transferable expression habits. For further calibration, it can pair originals with neutral expressions that preserve facts, conditions and claim strength, then split complete documents into extraction, validation and test sets to examine voice across topics. The new helper checks original provenance, numbers, cross-split duplication on both sides of each pair and semantic-review records. You keep supplying files; the agent prepares and checks the data.
+
+需要测试本地生成时，还可选择 activation steering 实验后端：复用已有模型，提取激活差分向量，并与零强度原模型对照。默认写作流程继续使用本地 RAG。模型、运行环境与数据记录均保存在私有任务目录，配对和实验流程见[内容与文风实验](skills/essay-in-your-voice/references/content-style-experiments.md)。
+
+For local-generation experiments, an optional activation-steering backend reuses an existing model, extracts activation differences and compares generation with a zero-strength control. The default writing workflow continues to use local RAG. Model, runtime and data records stay in the private task folder. See [content and voice experiments](skills/essay-in-your-voice/references/content-style-experiments.md) for pairing and evaluation.
+
 ## 上传即可开始 / Upload and start
 
 安装后，把手头资料上传到支持附件的 agent，发送下面一句即可。终端 agent 可以读取你放进工作目录的文件。文件分类、文字提取、版本匹配、文风分析、逐段诊断、修订记录和评分核查都交给 agent 完成。
@@ -336,9 +346,9 @@ Developers can use the helper below to compare two UTF-8 TXT/Markdown versions a
 python scripts/compare_versions.py --before inputs/v1.txt --after inputs/v2.txt --output outputs/version-diff.json
 ```
 
-安装的 skill 包含四个 Python 标准库工具：`voice_rag.py` 建立本地写作证据库并运行检查包；`verify_wording_scope.py` 精确核验高亮区间授权；`summarize_report_history.py` 汇总报告记录；`summarize_repeated_highlights.py` 对照重复高亮。工具位于 `skills/essay-in-your-voice/scripts/`，输入由 agent 自动生成。
+安装的 skill 包含五个 Python 标准库工具：`voice_rag.py` 建立本地写作证据库并运行检查包；`verify_wording_scope.py` 精确核验高亮区间授权；`summarize_report_history.py` 汇总报告记录；`summarize_repeated_highlights.py` 对照重复高亮；`voice_pairs.py` 核查内容配对与文章级数据划分。可选的 `voice_steering.py` 使用已有 torch 和 transformers 环境运行本地实验。工具位于 `skills/essay-in-your-voice/scripts/`，输入由 agent 自动生成。
 
-The installed skill includes four Python-standard-library helpers: `voice_rag.py` manages local evidence and review packets; `verify_wording_scope.py` checks exact highlight authorization; `summarize_report_history.py` summarizes report history; and `summarize_repeated_highlights.py` compares recurring highlights. They live in `skills/essay-in-your-voice/scripts/`; the agent prepares their inputs.
+The installed skill includes five Python-standard-library helpers: `voice_rag.py` manages local evidence and review packets; `verify_wording_scope.py` checks exact highlight authorization; `summarize_report_history.py` summarizes report history; `summarize_repeated_highlights.py` compares recurring highlights; and `voice_pairs.py` checks content pairs and document-level splits. The optional `voice_steering.py` runs local experiments in an existing torch and transformers environment. They live in `skills/essay-in-your-voice/scripts/`; the agent prepares their inputs.
 
 开发验证使用以下命令，覆盖受保护文字、Unicode位置、换行、越界编辑、重复送检、隐藏分数及同正文分数差异等情况。
 
