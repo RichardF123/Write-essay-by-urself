@@ -22,7 +22,65 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def validate_dataset(data, db_path, owner):
+def text_hash(text):
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()
+
+
+def validate_pair_evidence(pair):
+    """Check traceability, not the truth of the recorded semantic judgments."""
+    pid = pair.get('pair_id', '?')
+    evidence = pair.get('pair_evidence')
+    require(isinstance(evidence, dict), f'{pid}: pair evidence is missing.')
+    original, neutral = pair['original'], pair['neutral']
+    require(evidence.get('original_sha256') == text_hash(original),
+            f'{pid}: evidence bound to a different original.')
+    require(evidence.get('neutral_sha256') == text_hash(neutral),
+            f'{pid}: evidence bound to a different rewrite.')
+    generation = evidence.get('generation', {})
+    require(isinstance(generation, dict), f'{pid}: invalid generation record.')
+    for key in ('model', 'created_at', 'method', 'prompt', 'raw_response'):
+        require(isinstance(generation.get(key), str) and generation[key].strip(),
+                f'{pid}: generation {key} is missing.')
+    require(generation.get('model_id_status') in {'known', 'not_exposed'},
+            f'{pid}: record whether the model identifier is exposed.')
+    # A local editorial fix is replayed explicitly; the generated response stays intact.
+    replay = generation['raw_response']
+    edits = generation.get('edits', [])
+    require(isinstance(edits, list), f'{pid}: invalid rewrite edits.')
+    for edit in edits:
+        require(isinstance(edit, dict) and isinstance(edit.get('before'), str)
+                and edit['before'] and isinstance(edit.get('after'), str)
+                and isinstance(edit.get('reason'), str) and edit['reason'].strip(),
+                f'{pid}: rewrite edit needs exact text and reason.')
+        require(replay.count(edit['before']) == 1,
+                f'{pid}: rewrite edit must match exactly once.')
+        replay = replay.replace(edit['before'], edit['after'], 1)
+    require(replay == neutral, f'{pid}: generated response and edits do not reproduce rewrite.')
+    require(isinstance(evidence.get('reviewer'), str) and evidence['reviewer'].strip(),
+            f'{pid}: evidence reviewer is missing.')
+    alignment = evidence.get('alignment')
+    require(isinstance(alignment, list) and alignment, f'{pid}: claim alignment is missing.')
+    covered = set()
+    for row in alignment:
+        require(isinstance(row, dict), f'{pid}: invalid alignment row.')
+        index = row.get('claim_index')
+        require(type(index) is int and 0 <= index < len(pair['content_contract']),
+                f'{pid}: invalid claim index.')
+        for key, text in (('original_quote', original), ('neutral_quote', neutral)):
+            require(isinstance(row.get(key), str) and row[key].strip() and row[key] in text,
+                    f'{pid}: {key} must be an exact nonempty anchor.')
+        require(row.get('status') == 'pass' and isinstance(row.get('reason'), str)
+                and row['reason'].strip(), f'{pid}: claim alignment needs a passing review.')
+        covered.add(index)
+    require(covered == set(range(len(pair['content_contract']))),
+            f'{pid}: some content claims have no aligned evidence.')
+    additions = evidence.get('addition_review', {})
+    require(isinstance(additions, dict) and additions.get('status') == 'pass'
+            and isinstance(additions.get('reason'), str) and additions['reason'].strip(),
+            f'{pid}: review the rewrite for added claims.')
+
+
+def validate_dataset(data, db_path, owner, require_pair_evidence=False):
     require(isinstance(data, dict) and isinstance(data.get('pairs'), list) and data['pairs'],
             'Supply a nonempty pairs list.')
     require(isinstance(owner, str) and owner.strip(), 'Supply an owner.')
@@ -80,6 +138,8 @@ def validate_dataset(data, db_path, owner):
                 require(isinstance(check, dict) and check.get('status') == 'pass' and
                         isinstance(check.get('reason'), str) and check['reason'].strip(),
                         f'{pid}: {key} needs an explicit semantic review.')
+            if require_pair_evidence or 'pair_evidence' in pair:
+                validate_pair_evidence(pair)
             require(isinstance(pair.get('topic'), str) and pair['topic'].strip(),
                     f'{pid}: topic label is missing.')
             for mapping, key, label in (
@@ -104,6 +164,7 @@ def validate_dataset(data, db_path, owner):
         return {'format': 'voice-pairs-v1', 'owner': owner,
                 'store_id': meta['store_id'], 'corpus_revision': int(meta['corpus_revision']),
                 'pairs': result, 'counts': counts, 'families': len(family_split),
+                'pairs_with_evidence': sum('pair_evidence' in p for p in result),
                 'dataset_sha256': digest(result),
                 'interpretation': 'Provenance and split checks passed. Semantic checks are agent judgments; no pure-style or sufficient-sample claim.'}
     finally:
@@ -127,8 +188,10 @@ def main():
     p.add_argument('--owner', required=True)
     p.add_argument('--input', required=True)
     p.add_argument('--output', required=True)
+    p.add_argument('--require-pair-evidence', action='store_true',
+                   help='Require replayable rewrite provenance and exact claim anchors.')
     a = p.parse_args()
-    result = validate_dataset(read_json(a.input), a.db, a.owner)
+    result = validate_dataset(read_json(a.input), a.db, a.owner, a.require_pair_evidence)
     write_new(a.output, result)
     print(json.dumps({k: result[k] for k in ('counts', 'families', 'dataset_sha256')}))
 

@@ -10,6 +10,18 @@ HAS_TORCH = importlib.util.find_spec('torch') is not None
 
 
 class ExtractionTextTests(unittest.TestCase):
+    def test_cuda_capacity_gate_accepts_boundary(self):
+        steering.require_cuda_capacity(16 * 1024 ** 3, 16)
+
+    def test_cuda_capacity_gate_reports_busy_gpu(self):
+        with self.assertRaisesRegex(ValueError, 'Leave unrelated jobs running'):
+            steering.require_cuda_capacity(2 * 1024 ** 3, 16)
+
+    def test_cuda_capacity_gate_rejects_invalid_threshold(self):
+        for threshold in (-1, float('inf'), float('nan')):
+            with self.assertRaisesRegex(ValueError, 'finite and nonnegative'):
+                steering.require_cuda_capacity(24 * 1024 ** 3, threshold)
+
     def test_eos_at_budget_is_a_completed_answer(self):
         self.assertEqual(steering.finish_reason([4, 9], [8, 9], 2), 'eos')
 

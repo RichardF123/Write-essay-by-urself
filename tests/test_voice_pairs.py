@@ -143,6 +143,81 @@ class PairTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             pairs.write_new(path, {'first': False})
 
+    def add_evidence(self):
+        for pair in self.data['pairs']:
+            pair['pair_evidence'] = {
+                'original_sha256': pairs.text_hash(pair['original']),
+                'neutral_sha256': pairs.text_hash(pair['neutral']),
+                'generation': {'model': 'synthetic fixture', 'model_id_status': 'known',
+                               'created_at': '2026-11-19', 'method': 'Synthetic test fixture',
+                               'prompt': 'Keep the content.',
+                               'raw_response': pair['neutral']},
+                'reviewer': 'synthetic test',
+                'alignment': [{'claim_index': 0, 'original_quote': pair['original'],
+                               'neutral_quote': pair['neutral'], 'status': 'pass',
+                               'reason': 'The number and setting are retained.'}],
+                'addition_review': {'status': 'pass', 'reason': 'No new proposition.'}}
+
+    def test_strict_mode_requires_evidence_for_legacy_pairs(self):
+        with self.assertRaisesRegex(ValueError, 'evidence is missing'):
+            pairs.validate_dataset(self.data, self.db, 'writer', True)
+
+    def test_strict_evidence_passes_and_keeps_store_unchanged(self):
+        self.add_evidence()
+        before = self.db.read_bytes()
+        result = pairs.validate_dataset(self.data, self.db, 'writer', True)
+        self.assertEqual(result['pairs_with_evidence'], 3)
+        self.assertEqual(before, self.db.read_bytes())
+
+    def test_rewrite_change_invalidates_evidence_even_without_strict_flag(self):
+        self.add_evidence()
+        self.data['pairs'][0]['neutral'] += ' We know more.'
+        with self.assertRaisesRegex(ValueError, 'different rewrite'):
+            self.validate()
+
+    def test_invented_anchor_is_rejected(self):
+        self.add_evidence()
+        self.data['pairs'][0]['pair_evidence']['alignment'][0]['original_quote'] = 'Missing text.'
+        with self.assertRaisesRegex(ValueError, 'exact nonempty anchor'):
+            self.validate()
+
+    def test_every_contract_claim_needs_alignment(self):
+        self.add_evidence()
+        self.data['pairs'][0]['content_contract'].append('A second claim.')
+        with self.assertRaisesRegex(ValueError, 'no aligned evidence'):
+            self.validate()
+
+    def test_failed_alignment_and_added_claim_review_block_extraction(self):
+        self.add_evidence()
+        original = copy.deepcopy(self.data)
+        self.data['pairs'][0]['pair_evidence']['alignment'][0]['status'] = 'fail'
+        with self.assertRaisesRegex(ValueError, 'passing review'):
+            self.validate()
+        self.data = original
+        self.data['pairs'][0]['pair_evidence']['addition_review']['status'] = 'unknown'
+        with self.assertRaisesRegex(ValueError, 'added claims'):
+            self.validate()
+
+    def test_generation_is_replayed_with_explicit_editorial_changes(self):
+        self.add_evidence()
+        e = self.data['pairs'][0]['pair_evidence']
+        e['generation']['raw_response'] = 'EARLIER'
+        with self.assertRaisesRegex(ValueError, 'do not reproduce'):
+            self.validate()
+        e['generation']['edits'] = [{'before': 'EARLIER',
+                                    'after': self.data['pairs'][0]['neutral'],
+                                    'reason': 'Recorded correction.'}]
+        self.validate()
+
+    def test_unknown_model_is_recorded_explicitly(self):
+        self.add_evidence()
+        g = self.data['pairs'][0]['pair_evidence']['generation']
+        del g['model_id_status']
+        with self.assertRaisesRegex(ValueError, 'identifier'):
+            self.validate()
+        g['model_id_status'] = 'not_exposed'
+        self.validate()
+
 
 if __name__ == '__main__':
     unittest.main()

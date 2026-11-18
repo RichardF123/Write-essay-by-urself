@@ -163,9 +163,17 @@ agent 会把主题术语与可迁移的表达习惯分别记录。需要进一�
 
 The agent records topic vocabulary separately from transferable expression habits. For further calibration, it can pair originals with neutral expressions that preserve facts, conditions and claim strength, then split complete documents into extraction, validation and test sets to examine voice across topics. The new helper checks original provenance, numbers, cross-split duplication on both sides of each pair and semantic-review records. You keep supplying files; the agent prepares and checks the data.
 
+配对以用户原作为固定的一侧，由 agent 生成同内容的通用表达作为另一侧。每组记录实际生成来源、指令、原始回复，以及每项内容在两侧的原文依据；不合格的对照单独保留并说明原因。新增严格核验会检查原文与改写哈希、修改回放、逐项对照覆盖和新增论断审阅。原作中的“考虑执行”、观点归属和原因指向都会单独核查。
+
+Each pair fixes the user's original on one side and uses an agent-generated, content-matched rewrite on the other. Records include the actual generator, instruction, raw response and exact anchors for each content claim. Rejected counterparts stay in a separate private record with reasons. Strict validation checks text hashes, edit replay, claim-alignment coverage and a review of added assertions. The agent separately checks proposed versus completed actions, attribution and the target of each reason.
+
 需要测试本地生成时，还可选择 activation steering 实验后端：复用已有模型，提取激活差分向量，并与零强度原模型对照。默认写作流程继续使用本地 RAG。模型、运行环境与数据记录均保存在私有任务目录，配对和实验流程见[内容与文风实验](skills/essay-in-your-voice/references/content-style-experiments.md)。
 
 For local-generation experiments, an optional activation-steering backend reuses an existing model, extracts activation differences and compares generation with a zero-strength control. The default writing workflow continues to use local RAG. Model, runtime and data records stay in the private task folder. See [content and voice experiments](skills/essay-in-your-voice/references/content-style-experiments.md) for pairing and evaluation.
+
+本地实验会先核查原模型是否保留内容，再比较文风。正文与编辑检查分开输入，特别核查人物动作、否定、观点归属和“建议／实施”等阶段区别。共享 GPU 可设置加载前的空闲显存阈值；每次实验分别记录提取样本数、合格测试场景数、零强度对照和实际输出变化。
+
+Local experiments first check the base model's content preservation, then compare voice. Draft prose and editor checks are supplied separately, with explicit review of actions, negatives, attribution and stages such as recommending versus implementing. Shared-GPU runs can set a free-memory threshold before loading. Each experiment records extraction samples, qualified scenarios, zero-strength controls and observed output changes separately.
 
 ## 上传即可开始 / Upload and start
 

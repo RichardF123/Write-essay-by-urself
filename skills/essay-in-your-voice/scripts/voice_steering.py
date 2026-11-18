@@ -28,13 +28,25 @@ def model_identity(path):
     return {'files_sha256': hashes, 'model_sha256': digest(hashes)}
 
 
-def load_model(path, dtype, device, cpu_threads=1):
+def require_cuda_capacity(free_bytes, min_free_gib):
+    require(math.isfinite(min_free_gib) and min_free_gib >= 0,
+            'Minimum free GPU memory must be finite and nonnegative.')
+    require(free_bytes >= min_free_gib * 1024 ** 3,
+            f'GPU has {free_bytes / 1024 ** 3:.2f} GiB free; requested at least '
+            f'{min_free_gib:g} GiB. Leave unrelated jobs running and retry when capacity is available.')
+
+
+def load_model(path, dtype, device, cpu_threads=1, min_free_gib=0):
     import torch
     import transformers
     from transformers import AutoModelForCausalLM, AutoTokenizer
     require(type(cpu_threads) is int and cpu_threads > 0, 'CPU thread count must be positive.')
     torch.set_num_threads(cpu_threads)
+    require(math.isfinite(min_free_gib) and min_free_gib >= 0,
+            'Minimum free GPU memory must be finite and nonnegative.')
     require(device != 'cuda' or torch.cuda.is_available(), 'CUDA is unavailable.')
+    if device == 'cuda' and min_free_gib:
+        require_cuda_capacity(torch.cuda.mem_get_info()[0], min_free_gib)
     tok = AutoTokenizer.from_pretrained(path, local_files_only=True, trust_remote_code=False)
     model = AutoModelForCausalLM.from_pretrained(
         path, local_files_only=True, trust_remote_code=False,
@@ -93,7 +105,7 @@ def extract(a):
     require(not Path(a.output).exists(), 'Output already exists.')
     data = validate_dataset(read_json(a.input), a.db, a.owner)
     identity = model_identity(a.model)
-    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads)
+    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads, a.min_free_gib)
     layer_ids = sorted(set(a.layers))
     require(layer_ids and all(0 <= l < len(model.model.layers) for l in layer_ids),
             'Invalid layer index.')
@@ -156,7 +168,7 @@ def generate(a):
     for field in ('store_id', 'corpus_revision', 'dataset_sha256'):
         require(current[field] == vector_data[field], 'Voice evidence changed; re-extract the vector.')
     require(model_identity(a.model) == vector_data['identity'], 'Model/tokenizer snapshot mismatch.')
-    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads)
+    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads, a.min_free_gib)
     require(runtime == vector_data['runtime'], 'Runtime differs; re-extract and validate the vector.')
     key = str(a.layer)
     require(key in vector_data['vectors'], 'Layer was not extracted.')
@@ -213,7 +225,7 @@ def generate(a):
 def baseline(a):
     require(not Path(a.output).exists(), 'Output already exists.')
     identity = model_identity(a.model)
-    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads)
+    torch, tok, model, runtime = load_model(a.model, a.dtype, a.device, a.cpu_threads, a.min_free_gib)
     tasks = read_json(a.tasks)
     require(isinstance(tasks, dict) and isinstance(tasks.get('tasks'), list) and tasks['tasks'],
             'Supply nonempty tasks.')
@@ -254,6 +266,8 @@ def main():
         cmd.add_argument('--device', choices=['cpu', 'cuda'], default='cuda')
         cmd.add_argument('--max-tokens', type=int, default=1024)
         cmd.add_argument('--cpu-threads', type=int, default=1)
+        cmd.add_argument('--min-free-gib', type=float, default=0,
+                         help='Optional pre-load CUDA capacity gate; not a peak-memory guarantee.')
         cmd.add_argument('--output', required=True)
     e = subs.choices['extract']
     e.add_argument('--db', required=True); e.add_argument('--owner', required=True)

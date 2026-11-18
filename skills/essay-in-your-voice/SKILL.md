@@ -49,6 +49,8 @@ For optional external profile/retrieval tools, read [integrations.md](references
 
 For topic/voice confusion, cross-topic evaluation or an explicit activation-steering experiment, read [content-controlled voice experiments](references/content-style-experiments.md). Separate topic vocabulary from transferable expression functions, review original/neutral pairs against a content contract, and split full document families before tuning. Qualify the unsteered model's content fidelity before comparing styles. Optional local steering is a candidate-generation backend; normal editing retains the existing RAG and scope checks. Successful vector extraction is not evidence of improved author fit.
 
+For new original/AI-rewrite pairs, freeze the original, record rewrite provenance and exact claim anchors on both sides, review added claims, and run `voice_pairs.py --require-pair-evidence`. Revise a failed counterpart rather than changing the original. Keep rejected candidates privately and distinguish same-agent checks from independent review. The experiment reference defines the evidence schema and dataset/vector refresh rules.
+
 ## Compare reports when supplied
 
 Read [report-comparison.md](references/report-comparison.md) and use [highlight-patterns.md](references/highlight-patterns.md) as hypotheses, never a detector rulebook.
