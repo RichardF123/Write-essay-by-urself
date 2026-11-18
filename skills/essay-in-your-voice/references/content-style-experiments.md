@@ -112,6 +112,12 @@ The vector records full local model/tokenizer file hashes, runtime, dtype, layer
 
 Before loading on a shared GPU, inspect current occupancy and use `--min-free-gib` with a suitable run-specific threshold (for example, `16` for the tested 7B BF16 setup). It checks free CUDA memory before loading; it is not a reservation and another job can still start afterward. Preserve failed-run logs, avoid repeated OOM retries, and wait for capacity or coordinate with the user. Do not terminate unrelated tasks to make room. The option is available on `baseline`, `extract` and `generate` and does not change the vector's numerical settings.
 
+### Larger models and alternate inference adapters
+
+The bundled backend operates on one locally loaded Transformers model. For an explicitly authorized multi-host experiment, prepare an isolated adapter with a fixed model, dtype and layer partition. Check GPU and disk capacity on each host, reuse completed downloads and verify shards against the publisher's hashes. Carry activations through the authorized encrypted connection with their dtype and bits preserved. Keep the adapter, source excerpts and model-specific vectors private while validating it.
+
+Before using an alternate adapter for style judgments, compare its prefill and cached next-token logits against the standard implementation on a small compatible model at the intended dtype. Verify zero intervention and serialized activation round trips, then compare generated token IDs as well. Inspect the inherited generation configuration: greedy decoding can still apply a repetition penalty. Match that processor, EOS rules and prompt-history scope; raw-logit argmax alone may implement a different decoding rule. Record the actual decoding settings with each run. Re-extract for the larger model, then repeat the same content gate before style comparisons. Review each conditioning arm's zero-strength content separately, including RAG.
+
 The stored direction has unit norm, so `--strengths 1` is not equivalent to multiplying an unnormalized difference by one in another paper. Use the recorded `raw_norm` to understand scale, then perform a bounded validation-only sweep while checking content and grammar. Identical greedy text at a weak strength establishes only that tested setting; do not infer a universal absence of effect or increase strength merely to force different wording.
 
 ```sh
